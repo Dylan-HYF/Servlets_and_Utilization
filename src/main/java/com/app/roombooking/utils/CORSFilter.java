@@ -1,4 +1,4 @@
-package utils;
+package com.app.roombooking.utils;
 
 import java.io.IOException;
 import javax.servlet.*;

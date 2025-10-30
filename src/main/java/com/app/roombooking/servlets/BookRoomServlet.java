@@ -1,10 +1,9 @@
-package com.example.servlets;
+package com.app.roombooking.servlets;
 
-import utils.DBUtil;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
-import java.sql.*;
+
 import org.json.JSONObject;
 import javax.servlet.annotation.WebServlet;
 
