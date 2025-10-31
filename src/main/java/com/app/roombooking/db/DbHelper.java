@@ -35,11 +35,15 @@ public final class DbHelper {
     private static final String PASSWORD = "";
     private static final String URL = "jdbc:hsqldb:file:" + BASE + "/roombookingdb;shutdown=true";
 
+
     // THIS INITIALIZER EXPLICIT LOADS THE DRIVER
     static {
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             System.out.println("[DbHelper] HSQLDB JDBCDriver loaded");
+            //debugging
+            System.out.println("[DbHelper] BASE=" + BASE);
+            System.out.println("[DbHelper] URL=" + URL);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("HSQLDB driver not on classpath", e);
         }
@@ -48,6 +52,8 @@ public final class DbHelper {
     // This method opens and returns a java.sql.Connection
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
+
     }
+
 
 }

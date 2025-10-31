@@ -63,14 +63,20 @@ public final class DbBootstrap {
         // allow disabling in “prod”
         if ("false".equalsIgnoreCase(System.getProperty("SEED_DATA", "true"))) return;
 
-        try (Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM rooms")) {
-            rs.next();
-            if (rs.getInt(1) == 0) {
-                try (PreparedStatement insR = c.prepareStatement(
-                        "INSERT INTO rooms(roomName) VALUES (?)")) {
-                    insR.setString(1, "Room A");  insR.executeUpdate();
-                    insR.setString(1, "Room B");  insR.executeUpdate();
+        final String[] rooms = { "Room A", "Room B", "Room C" , "Room D" };
+
+        try (PreparedStatement sel = c.prepareStatement("SELECT 1 FROM rooms WHERE roomName = ?");
+             PreparedStatement ins = c.prepareStatement("INSERT INTO rooms(roomName) VALUES (?)")) {
+            for (String name : rooms) {
+                sel.setString(1, name);
+                try (ResultSet rs = sel.executeQuery()) {
+                    if (!rs.next()) {
+                        ins.setString(1, name);
+                        ins.executeUpdate();
+                        System.out.println("[DbBootstrap] Seeded room: " + name);
+                    } else {
+                        System.out.println("[DbBootstrap] Room already exists: " + name);
+                    }
                 }
             }
         }
