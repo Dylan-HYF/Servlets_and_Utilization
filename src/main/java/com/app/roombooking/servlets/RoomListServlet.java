@@ -27,6 +27,7 @@ public class RoomListServlet extends HttpServlet {
 
         try (var c = com.app.roombooking.db.DbHelper.getConnection()) {
             // 1) Rooms
+            // todo: add a new column called role, and fetch it from db
             try (var ps = c.prepareStatement("SELECT ROOMID AS id, ROOMNAME AS roomName FROM rooms ORDER BY ROOMNAME");
                  var rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -82,6 +83,8 @@ public class RoomListServlet extends HttpServlet {
                     roomObj.put("id", roomId);
                     roomObj.put("name", name);
                     roomObj.put("availability", avail);
+                    // todo:
+                    // roomObj.put("role", role);
                     out.put(roomObj);
                 }
             }
