@@ -76,7 +76,7 @@ public class AuthServlet extends HttpServlet {
                     return;
                 }
 
-                long Id = rs.getLong("id");          // adjust column name if needed
+                long Id = rs.getLong("id");
                 String dbPassword = rs.getString("password");
                 String dbRole = rs.getString("roomRole"); // "Student" or "Professor"
 

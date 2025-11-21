@@ -65,7 +65,7 @@ public class BookRoomServlet extends HttpServlet {
 
             long roomId = Long.parseLong(roomIdStr);
 
-            // Parse slot label like "09:00 AM" into a one-hour window for today (locale-stable)
+            // Parse slot label
             java.time.LocalDate today = java.time.LocalDate.now();
             java.time.format.DateTimeFormatter fmt =
                 new java.time.format.DateTimeFormatterBuilder()
