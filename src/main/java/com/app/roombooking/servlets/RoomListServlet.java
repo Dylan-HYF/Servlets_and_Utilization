@@ -54,15 +54,15 @@ public class RoomListServlet extends HttpServlet {
             // Professors see ALL rooms; students see only student rooms
             String sql;
             boolean hasParam;
-            if ("professor".equals(normalizedRole)) {
+//            if ("professor".equals(normalizedRole)) {
                 sql = "SELECT ROOMID AS id, ROOMNAME AS roomName, roomRole " +
                       "FROM rooms ORDER BY roomName";
                 hasParam = false;
-            } else {
-                sql = "SELECT ROOMID AS id, ROOMNAME AS roomName, roomRole " +
-                        "FROM rooms WHERE LOWER(roomRole) = ? ORDER BY roomName";
-                hasParam = true;
-            }
+//            } else {
+//                sql = "SELECT ROOMID AS id, ROOMNAME AS roomName, roomRole " +
+//                        "FROM rooms WHERE LOWER(roomRole) = ? ORDER BY roomName";
+//                hasParam = true;
+//            }
 
             try (var ps = c.prepareStatement(sql)) {
                 if (hasParam) {

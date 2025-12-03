@@ -129,6 +129,12 @@ public final class DbBootstrap {
             ins.setString(3, "Professor");
             ins.executeUpdate();
 
+            // Admin
+            ins.setString(1, "admin@uni.edu");
+            ins.setString(2, "admin");
+            ins.setString(3, "Admin");
+            ins.executeUpdate();
+
             System.out.println("[DbBootstrap] Seeded users table (student + professor)");
         }
     }
