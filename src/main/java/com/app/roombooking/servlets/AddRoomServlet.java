@@ -48,14 +48,48 @@ public class AddRoomServlet extends HttpServlet {
             System.out.println("Parsed Name: " + roomName);
             System.out.println("Parsed Role: " + roomRole);
 
-            // --- 5. Send Success Response ---
-            // Send back a success response with the parsed data
+            if (roomName == null || roomName.isBlank() || roomRole == null || roomRole.isBlank()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                result.put("success", false)
+                      .put("message", "Room name and role are required.");
+                response.getWriter().write(result.toString());
+                return;
+            }
+
+            // --- 5. Insert into DB using DbHelper ---
+            long generatedId = -1L;
+
+            String sql = "INSERT INTO rooms (ROOMNAME, ROOMROLE) VALUES (?, ?)"; // adjust column names if needed
+
+            try (Connection conn = DbHelper.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+                ps.setString(1, roomName);
+                ps.setString(2, roomRole);
+
+                int affected = ps.executeUpdate();
+
+                if (affected == 0) {
+                    throw new SQLException("Creating room failed, no rows affected.");
+                }
+
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedId = rs.getLong(1);
+                    }
+                }
+            }
+
+            // --- 6. Send Success Response ---
             response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created is typical for a resource creation
             result.put("success", true)
-                    .put("message", "Room received and simulated addition successfully.")
-                    .put("receivedData", roomData); // Echo back the data for validation
+                  .put("message", "Room created successfully.")
+                  .put("id", generatedId)
+                  .put("name", roomName)
+                  .put("role", roomRole);
 
         } catch (Exception e) {
+            e.printStackTrace();
             // Handle any exceptions during JSON parsing or reading
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             result.put("success", false)
